@@ -20,19 +20,34 @@ class _DetailPageState extends State<DetailPage> {
     _isCart = fav.isCart(widget.product.id);
   }
 
+  // Helper untuk memformat harga ke Rupiah
+  String get _formattedPrice => 'Rp ${(widget.product.price * 15000).toStringAsFixed(0)}';
+
+  Future<void> _toggleCart() async {
+    final cartProv = Provider.of<CartProvider>(context, listen: false);
+    // Logika tombol "Add to Cart": Menyimpan/menghapus ID produk [cite: 321]
+    await cartProv.toggleCart(widget.product.id);
+    setState(() {
+      _isCart = !_isCart;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final favProv = Provider.of<CartProvider>(context, listen: false);
-
+    // Tombol "Back" berfungsi secara otomatis di AppBar [cite: 320]
     return Scaffold(
       appBar: AppBar(title: Text(widget.product.title)),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 300,
               clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+              ),
+              // Menampilkan gambar detail produk
               child: Image.network(
                 widget.product.image,
                 fit: BoxFit.cover,
@@ -43,45 +58,90 @@ class _DetailPageState extends State<DetailPage> {
             const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      widget.product.title,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                  Text(
+                    widget.product.title,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _formattedPrice, // Menampilkan harga
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.deepOrangeAccent
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  // Tombol "Add to Cart" / "Remove from Cart"
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _toggleCart,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _isCart ? Colors.red : Colors.deepOrangeAccent,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                      ),
+                      icon: Icon(_isCart ? Icons.remove_shopping_cart : Icons.add_shopping_cart),
+                      label: Text(
+                        _isCart ? "Remove from Cart" : "Add to Cart",
+                        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(
-                      _isCart ? Icons.favorite : Icons.favorite_border,
-                      color: _isCart ? Colors.red : null,
-                    ),
-                    onPressed: () async {
-                      await favProv.toggleCart(widget.product.id);
-                      setState(() {
-                        _isCart = !_isCart;
-                      });
-                    },
-                  )
+
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Description',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  // Menampilkan data detail produk yang relevan (deskripsi) [cite: 319]
+                  Text(
+                    widget.product.description.isEmpty
+                        ? 'No description available.'
+                        : widget.product.description,
+                    textAlign: TextAlign.justify,
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      const Text(
+                        'Category:',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(widget.product.category),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Text(
+                        'Rating:',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.star, size: 16, color: Colors.amber),
+                      const SizedBox(width: 4),
+                      Text(widget.product.rating.toStringAsFixed(1)),
+                    ],
+                  ),
                 ],
               ),
             ),
-            ListTile(
-              title: const Text('Description'),
-              trailing: Text(widget.product.description),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(14),
-              child: Text(
-                widget.product.category.isEmpty
-                    ? 'No synopsis available.'
-                    : widget.product.category,
-              ),
-            ),
-
             const SizedBox(height: 30),
           ],
         ),

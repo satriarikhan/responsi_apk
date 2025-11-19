@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 
                 Text(
-                  "Anime App",
+                  "Selamat Datang",
                   style: TextStyle(
                     color: Colors.deepOrangeAccent,
                     fontSize: 34,
