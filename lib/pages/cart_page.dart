@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:responsi_apk/pages/detail.page.dart';
 import 'package:responsi_apk/providers/cart_provider.dart';
 import 'package:responsi_apk/providers/product_provider.dart';
-import 'package:responsi_apk/widgets/product_card.dart'; // Perbaikan import
+import 'package:responsi_apk/widgets/product_card.dart'; 
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});

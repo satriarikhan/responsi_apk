@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsi_apk/pages/cart_page.dart'; // Import CartPage
+import 'package:responsi_apk/pages/cart_page.dart'; 
 import 'package:responsi_apk/pages/detail.page.dart';
-import 'package:responsi_apk/pages/profile_page.dart'; // Import ProfilePage
+import 'package:responsi_apk/pages/profile_page.dart'; 
 import 'package:responsi_apk/providers/cart_provider.dart';
 import 'package:responsi_apk/providers/product_provider.dart';
 import 'package:responsi_apk/widgets/bottom_navbar.dart';
