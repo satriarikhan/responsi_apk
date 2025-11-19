@@ -9,16 +9,13 @@ class ProductProvider with ChangeNotifier {
   bool _loading = false;
   String? _error;
 
-  // Optional feature properties
   List<String> _categories = [];
   String? _selectedCategory;
 
-  // Mengembalikan daftar produk yang sudah difilter [cite: 333]
   List<Product> get products {
     if (_selectedCategory == null || _selectedCategory == 'All') {
       return _products;
     }
-    // Implementasi logika filter
     return _products.where((p) => p.category == _selectedCategory).toList();
   }
   
@@ -33,11 +30,11 @@ class ProductProvider with ChangeNotifier {
     _error = null;
     notifyListeners();
     try {
-      final res = await _api.fetchProduct(); // Mengambil dan mem-parsing data [cite: 313]
+      final res = await _api.fetchProduct(); 
       _products = res;
-      // Muat kategori untuk fitur opsional
+
       _categories = await _api.fetchCategories();
-      _selectedCategory = 'All'; // Inisialisasi filter
+      _selectedCategory = 'All';
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -46,7 +43,6 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  // Logic untuk memfilter berdasarkan kategori
   void filterByCategory(String? category) {
     _selectedCategory = category;
     notifyListeners();

@@ -10,9 +10,7 @@ import 'package:responsi_apk/providers/product_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inisialisasi Hive Flutter
   await Hive.initFlutter();
-  // Buka boxes yang diperlukan (users dan Cart)
   await Hive.openBox('users');
   await Hive.openBox('Cart');
 
@@ -37,14 +35,12 @@ class MyApp extends StatelessWidget {
       title: 'Responsi E-Commerce',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // Tema gelap untuk menyesuaikan tampilan yang Anda berikan
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepOrange,
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
       ),
-      // FutureBuilder untuk menangani inisialisasi sesi
       home: const SessionGate(),
     );
   }
@@ -59,7 +55,6 @@ class SessionGate extends StatefulWidget {
 
 class _SessionGateState extends State<SessionGate> {
   Future<void> _loadSession() async {
-    // Memuat sesi dari Shared Preferences saat aplikasi dimulai
     await Provider.of<AuthProvider>(context, listen: false).loadFromSession();
   }
 
@@ -67,12 +62,10 @@ class _SessionGateState extends State<SessionGate> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
-    // Periksa status login hanya setelah sesi dimuat
     return FutureBuilder(
       future: _loadSession(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Tampilkan loading screen saat memuat sesi
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(color: Colors.deepOrangeAccent),
@@ -80,7 +73,6 @@ class _SessionGateState extends State<SessionGate> {
           );
         }
 
-        // Navigasi berdasarkan status login
         if (authProvider.currentUser != null) {
           return const HomePage();
         } else {

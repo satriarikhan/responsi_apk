@@ -20,12 +20,10 @@ class _DetailPageState extends State<DetailPage> {
     _isCart = fav.isCart(widget.product.id);
   }
 
-  // Helper untuk memformat harga ke Rupiah
   String get _formattedPrice => 'Rp ${(widget.product.price * 15000).toStringAsFixed(0)}';
 
   Future<void> _toggleCart() async {
     final cartProv = Provider.of<CartProvider>(context, listen: false);
-    // Logika tombol "Add to Cart": Menyimpan/menghapus ID produk [cite: 321]
     await cartProv.toggleCart(widget.product.id);
     setState(() {
       _isCart = !_isCart;
@@ -34,7 +32,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Tombol "Back" berfungsi secara otomatis di AppBar [cite: 320]
     return Scaffold(
       appBar: AppBar(title: Text(widget.product.title)),
       body: SingleChildScrollView(
@@ -47,7 +44,6 @@ class _DetailPageState extends State<DetailPage> {
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
               ),
-              // Menampilkan gambar detail produk
               child: Image.network(
                 widget.product.image,
                 fit: BoxFit.cover,
@@ -78,8 +74,7 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
-                  // Tombol "Add to Cart" / "Remove from Cart"
+                
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
@@ -107,7 +102,6 @@ class _DetailPageState extends State<DetailPage> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  // Menampilkan data detail produk yang relevan (deskripsi) [cite: 319]
                   Text(
                     widget.product.description.isEmpty
                         ? 'No description available.'

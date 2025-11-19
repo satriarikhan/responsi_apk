@@ -12,8 +12,6 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartProv = Provider.of<CartProvider>(context);
     final productProv = Provider.of<ProductProvider>(context, listen: false);
-
-    // Mengambil data list produk yang telah masuk ke keranjang [cite: 323]
     final cartIds = cartProv.carts;
     final list = productProv.products.where((a) => cartIds.contains(a.id)).toList();
 
@@ -23,13 +21,12 @@ class CartPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Perbaikan pop
+            Navigator.pop(context); 
           },
         ),
       ),
       body: list.isEmpty
           ? const Center(child: Text('No carts yet'))
-          // Menampilkan daftar produk (gambar, judul, harga) [cite: 324]
           : GridView.builder(
               padding: const EdgeInsets.all(12),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -41,14 +38,13 @@ class CartPage extends StatelessWidget {
               itemCount: list.length,
               itemBuilder: (ctx, idx) {
                 final a = list[idx];
-                return ProductCard( // Perbaikan: menggunakan ProductCard
+                return ProductCard( 
                   product: a,
                   isCart: true,
                   onFavToggle: () => cartProv.toggleCart(a.id),
-                  // Navigasi ke Halaman Detail saat produk di keranjang di-klik [cite: 325]
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => DetailPage(product: a)), // Perbaikan: parameter 'product'
+                    MaterialPageRoute(builder: (_) => DetailPage(product: a)), 
                   ),
                 );
               },

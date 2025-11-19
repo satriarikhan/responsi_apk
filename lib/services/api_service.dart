@@ -9,7 +9,6 @@ class ApiService {
     final url = Uri.parse('$base/products');
     final resp = await http.get(url);
     if (resp.statusCode == 200) {
-      // API fakestoreapi.com/products mengembalikan List langsung
       final List data = json.decode(resp.body);
       return data.map((e) => Product.fromJson(e)).toList();
     } else {
@@ -18,7 +17,6 @@ class ApiService {
   }
 
   Future<Product> fetchProductDetail(int id) async {
-    // Menggunakan endpoint produk tunggal dari fakestoreapi
     final url = Uri.parse('$base/products/$id');
     final resp = await http.get(url);
     if (resp.statusCode == 200) {
@@ -29,7 +27,6 @@ class ApiService {
     }
   }
 
-  // OPTIONAL FEATURE: Mengambil data kategori dari API [cite: 331]
   Future<List<String>> fetchCategories() async {
     final url = Uri.parse('$base/products/categories');
     final resp = await http.get(url);

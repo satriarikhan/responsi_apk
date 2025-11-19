@@ -4,13 +4,11 @@ import 'package:responsi_apk/models/product_model.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onTap;
-  final VoidCallback onFavToggle; // Digunakan untuk fungsi toggleCart
+  final VoidCallback onFavToggle; 
   final bool isCart;
 
-  // Nama parameter disederhanakan dan disesuaikan dengan penggunaan di home_page.dart
   const ProductCard({super.key, required this.product, required this.onTap, required this.onFavToggle, required this.isCart});
 
-  // Helper untuk memformat harga ke Rupiah (asumsi $1 = Rp15.000)
   String get _formattedPrice => 'Rp ${(product.price * 15000).toStringAsFixed(0)}';
 
   @override
@@ -31,7 +29,6 @@ class ProductCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    // Menampilkan gambar [cite: 315]
                     Image.network(product.image, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(color: Colors.grey)),
                     Positioned(
                       top: 8,
@@ -54,17 +51,14 @@ class ProductCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Menampilkan judul [cite: 315]
                   Text(product.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 6),
                   Row(children: [
                     const Icon(Icons.star, size: 14, color: Colors.amber), 
                     const SizedBox(width: 6), 
-                    // Menampilkan rating
                     Text(product.rating.toStringAsFixed(1)),
                   ]),
                   const SizedBox(height: 4),
-                  // Menampilkan harga [cite: 315]
                   Text(_formattedPrice, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.deepOrangeAccent)),
                 ],
               ),

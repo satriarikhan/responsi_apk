@@ -15,15 +15,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // Data statis (ganti dengan Nama dan NIM Anda)
   final String _staticName = 'Satria Rikhan Ganendra';
   final String _staticNim = '124230157';
 
   Future<void> _logout() async {
-    // Logika tombol "Logout" [cite: 328, 329]
     await Provider.of<AuthProvider>(context, listen: false).logout();
     if (mounted) {
-      // Navigasi ke Halaman Login dan hapus semua rute sebelumnya
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (_) => const LoginPage()),
@@ -33,7 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    // Menerapkan fitur Kamera dan Image Access [cite: 327]
     PermissionStatus status;
     if (source == ImageSource.camera) {
       status = await Permission.camera.request();
@@ -55,7 +51,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (pickedFile != null) {
       final imageFile = File(pickedFile.path);
-      // Konversi ke Base64 untuk penyimpanan
       final bytes = await imageFile.readAsBytes();
       final base64Image = base64Encode(bytes);
 
@@ -66,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
           photoBase64: base64Image,
           nim: _staticNim,
         );
-        setState(() {}); // Perbarui UI untuk menampilkan foto baru
+        setState(() {});
       }
     }
   }
@@ -148,7 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final username = user?.username ?? 'N/A';
     final nim = user?.nim ?? _staticNim;
 
-    // Tampilkan data statis (Nama, NIM) dan dinamis (Username) [cite: 326]
     ImageProvider profileImage;
     if (photoBase64 != null && photoBase64.isNotEmpty) {
       try {
@@ -157,12 +151,12 @@ class _ProfilePageState extends State<ProfilePage> {
       } catch (_) {
         profileImage = const AssetImage(
           'assets/images/default_profile.png',
-        ); // Placeholder
+        );
       }
     } else {
       profileImage = const AssetImage(
         'assets/images/default_profile.png',
-      ); // Placeholder
+      ); 
     }
 
     return Scaffold(
@@ -180,7 +174,6 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             const SizedBox(height: 20),
 
-            // Profile Picture with Ganti Foto button
             GestureDetector(
               onTap: () => _showImageSourceActionSheet(context),
               child: Stack(
@@ -233,7 +226,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
             const SizedBox(height: 30),
 
-            // Logout Button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: SizedBox(

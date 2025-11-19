@@ -23,7 +23,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      // Perbaikan: Menggunakan ProductProvider
       _productProv = Provider.of<ProductProvider>(context, listen: false);
       _productProv!.loadProduct();
     });
@@ -40,20 +39,18 @@ class _HomePageState extends State<HomePage> {
         break;
 
       case 1:
-        // Navigasi ke CartPage (sesuai BottomNavbar)
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const CartPage()),
         ).then((_) {
           if (mounted) {
             setState(() => _currentIndex = 0);
-            _productProv!.loadProduct(); // Refresh data saat kembali ke Home
+            _productProv!.loadProduct(); 
           }
         });
         break;
 
       case 2:
-        // Navigasi ke ProfilePage (sesuai BottomNavbar)
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const ProfilePage()),
@@ -66,7 +63,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Widget untuk Filter Kategori (Optional Feature) [cite: 332]
   Widget _buildFilterChips(ProductProvider productProv) {
     return SizedBox(
       height: 40,
@@ -95,7 +91,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Perbaikan: Menggunakan ProductProvider
     final productProv = Provider.of<ProductProvider>(context);
     final cartProv = Provider.of<CartProvider>(context);
 
@@ -117,7 +112,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            // Integrasi Filter Kategori (jika data sudah dimuat)
             if (productProv.categories.isNotEmpty) _buildFilterChips(productProv),
             if (productProv.categories.isNotEmpty) const SizedBox(height: 12),
 
@@ -142,14 +136,12 @@ class _HomePageState extends State<HomePage> {
                   return Center(child: Text('Error: ${productProv.error}'));
                 }
 
-                // Gunakan daftar produk yang sudah difilter
                 final list = productProv.products; 
 
                 if (list.isEmpty) {
                   return const Center(child: Text('No products found.'));
                 }
 
-                // Menampilkan data produk dalam bentuk GridView [cite: 314]
                 return GridView.builder(
                   padding: const EdgeInsets.all(12),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -164,14 +156,11 @@ class _HomePageState extends State<HomePage> {
                     return ProductCard(
                       product: a,
                       isCart: cartProv.isCart(a.id),
-                      // Mengganti onFavToggle dengan toggleCart dari CartProvider
                       onFavToggle: () => cartProv.toggleCart(a.id),
-                      // Navigasi ke Halaman Detail [cite: 316]
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => DetailPage(product: a)),
                       ),
-                      // Menghapus parameter yang tidak perlu dari file lama
                     );
                   },
                 );
